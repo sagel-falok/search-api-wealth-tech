@@ -1,0 +1,107 @@
+[
+  {
+    "client_email": "john.doe@neviswealth.com",
+    "category": "address_proof",
+    "title": "Thames Water & EDF Electricity Utility Bill - October 2026",
+    "content": "Account Holder: John Doe. Service Address: 42 Kensington Palace Gardens, London W8 4QP, United Kingdom. Billing Period: 01 Oct 2026 to 31 Oct 2026. Electricity consumption: 412 kWh. Water & sewerage charges: GBP 68.50. Total amount due: GBP 245.90 paid via Direct Debit. This utility bill serves as official verification of residential address.",
+    "summary": "October 2026 electricity and water utility bill confirming John Doe's residential address at 42 Kensington Palace Gardens, London."
+  },
+  {
+    "client_email": "john.doe@neviswealth.com",
+    "category": "estate_planning_and_trusts",
+    "title": "The Doe Family Revocable Living Trust Deed",
+    "content": "Declaration of Trust established on 14 March 2025 by Grantors John Doe and Jane Doe. Appoints Nevis Fiduciary Services Ltd. as Successor Co-Trustee. Assets transferred into trust include the primary London residence, brokerage account #NW-88412, and 1,250,000 Class A shares of NevisWealth Holdings. Provides generation-skipping distribution provisions for surviving issue.",
+    "summary": "Revocable living trust deed executed by John and Jane Doe governing succession of real estate, brokerage holdings, and NevisWealth equity."
+  },
+  {
+    "client_email": "john.doe@neviswealth.com",
+    "category": "tax_filings_and_reporting",
+    "title": "US Form 1040 & UK HMRC Dual-Resident Tax Return FY 2025",
+    "content": "Taxpayer: John Doe (SSN XXX-XX-4910). Adjusted Gross Income: USD 3,450,000. Includes Schedule D long-term capital gains of USD 1,120,000, Form 1116 Foreign Tax Credit for UK HMRC PAYE withholdings, and FinCEN Form 114 (FBAR) reporting Barclays and UBS multi-currency accounts.",
+    "summary": "2025 US/UK dual-resident income tax return reporting $3.45M AGI, foreign tax credits, and FBAR foreign account disclosures."
+  },
+  {
+    "client_email": "elena.rostova@apexcapital.io",
+    "category": "alternative_and_private_investments",
+    "title": "Apex AI Ventures Fund III LP - Capital Call Notice #4",
+    "content": "Limited Partner: Elena Rostova Living Trust. Total Commitment: USD 5,000,000. Prior Called Capital: USD 2,250,000. Current Drawdown Amount: USD 750,000 (15% of commitment) due on 30 November 2026 to fund Series B follow-on investments in autonomous enterprise software. Wire instructions: Silicon Valley Commercial Bank, ABA 121140399.",
+    "summary": "$750,000 capital call notice (15% drawdown) for Elena Rostova's $5M commitment in Apex AI Ventures Fund III LP."
+  },
+  {
+    "client_email": "elena.rostova@apexcapital.io",
+    "category": "tax_filings_and_reporting",
+    "title": "Schedule K-1 (Form 1065) & Section 1202 QSBS Eligibility Attestation",
+    "content": "Partner Name: Elena Rostova. Partnership: Apex Capital GP III LLC. Distributive share of net long-term capital gain: USD 4,820,000. Carried interest allocation qualifies for long-term treatment under IRC Section 1061 (holding period > 3 years). Attached issuer attestation confirms neural-compute portfolio exit meets IRC Section 1202 Qualified Small Business Stock (QSBS) 100% federal capital gains exclusion.",
+    "summary": "Partnership Schedule K-1 reporting $4.82M carried interest gain with Section 1202 QSBS tax exclusion certification."
+  },
+  {
+    "client_email": "elena.rostova@apexcapital.io",
+    "category": "identity_verification",
+    "title": "United States Passport - Biometric Identity Verification",
+    "content": "Surname: Rostova. Given Names: Elena. Nationality: United States of America. Passport No: A94827163. Date of Birth: 19 Aug 1983. Place of Birth: New York, USA. Date of Issue: 04 Jan 2023. Date of Expiration: 03 Jan 2033. Verified via automated KYC biometric liveness check.",
+    "summary": "Verified US passport record for Elena Rostova (valid through January 2033) for KYC identity compliance."
+  },
+  {
+    "client_email": "dr.arjun.patel@vanguardia-bio.com",
+    "category": "income_and_source_of_wealth",
+    "title": "Vanguardia Therapeutics Founders Equity Grant & Patent Royalty Schedule",
+    "content": "Executive: Dr. Arjun Patel, Chief Scientific Officer. Source of wealth documentation comprising 4,500,000 vested founder common shares (pre-IPO valuation USD 67.5M) and a 2.5% net sales licensing royalty agreement on mRNA oncology patent family US-11,492,001-B2 assigned to Vanguardia Therapeutics Inc.",
+    "summary": "Source of wealth verification detailing Dr. Arjun Patel's $67.5M pre-IPO founder equity and 2.5% oncology patent royalty stream."
+  },
+  {
+    "client_email": "dr.arjun.patel@vanguardia-bio.com",
+    "category": "advisory_agreements_and_financial_planning",
+    "title": "Rule 10b5-1 Executive Stock Liquidation Plan & Investment Policy Statement",
+    "content": "Adopted by Dr. Arjun Patel during an open trading window on 15 September 2026 pursuant to SEC Rule 10b5-1. Authorizes automated sale of up to 50,000 shares per quarter following the post-IPO lockup expiration, with proceeds reinvested into a diversified municipal bond and global equity core portfolio targeting a 60/40 moderate-growth risk profile.",
+    "summary": "SEC Rule 10b5-1 automated stock diversification plan and 60/40 Investment Policy Statement for Dr. Arjun Patel."
+  },
+  {
+    "client_email": "dr.arjun.patel@vanguardia-bio.com",
+    "category": "address_proof",
+    "title": "Eversource Electric & Boston Water Utility Statement",
+    "content": "Customer: Dr. Arjun Patel. Premise Address: 188 Commonwealth Avenue, Apt 4B, Boston, MA 02116. Statement Date: 22 October 2026. Electric service charge: USD 184.20. Municipal water & sewer charge: USD 62.10. Current balance paid in full. Provided as residential proof of address for brokerage account onboarding.",
+    "summary": "October 2026 Eversource electricity and Boston water utility bill confirming Dr. Arjun Patel's residence at 188 Commonwealth Avenue, Boston."
+  },
+  {
+    "client_email": "alistair.sterling@meridian-ventures.co.uk",
+    "category": "retirement_and_pensions",
+    "title": "Meridian Executive Self-Invested Personal Pension (SIPP) Valuation",
+    "content": "Member: Alistair Sterling. Scheme Administrator: Hargreaves Lansdown Trustees. Total SIPP Portfolio Value as of 31 October 2026: GBP 3,890,000. Holdings include UK Gilts (35%), FTSE All-World Index Institutional Accumulation Units (45%), and commercial property syndicate units in Bristol (20%). Lifetime allowance protection certificate: Fixed Protection 2016.",
+    "summary": "Annual UK SIPP pension valuation showing GBP 3.89M across gilts, global equities, and commercial property with Fixed Protection 2016."
+  },
+  {
+    "client_email": "alistair.sterling@meridian-ventures.co.uk",
+    "category": "real_estate_and_property",
+    "title": "HM Land Registry Title Deed & Savills Rural Appraisal - Cotswolds Manor",
+    "content": "Title Number: GR558291. Registered Proprietor: Alistair Sterling. Property: Highmeadow Manor Estate, Stow-on-the-Wold, Gloucestershire, GL54 1AB, comprising Grade II listed main residence and 140 acres of arable farmland. Independent RICS Red Book valuation by Savills dated September 2026: GBP 8,750,000 free of mortgage encumbrances.",
+    "summary": "HM Land Registry title deed and GBP 8.75M unencumbered Savills RICS valuation for Alistair Sterling's 140-acre Cotswolds estate."
+  },
+  {
+    "client_email": "alistair.sterling@meridian-ventures.co.uk",
+    "category": "address_proof",
+    "title": "City of Westminster Annual Council Tax Bill 2026/2027",
+    "content": "Liable Resident: Mr. Alistair Sterling. Property Address: 19 Mount Street, Mayfair, London W1K 2RN. Valuation Band: H. Annual Charge for 2026/2027: GBP 2,034.16. Payment method: Monthly Direct Debit from Coutts & Co current account. Accepted as primary UK residency and proof of address document.",
+    "summary": "2026/2027 Westminster Council Tax statement confirming Alistair Sterling's primary London residence at 19 Mount Street, Mayfair."
+  },
+  {
+    "client_email": "zoe.laurent.art@gmail.com",
+    "category": "insurance_and_risk_management",
+    "title": "Chubb Masterpiece Fine Art Schedule & Sotheby's Provenance Appraisal",
+    "content": "Named Insured: Zoë Laurent. Vault & Gallery Locations: Rue du Rhône 48, 1204 Geneva & Place des Vosges, Paris. Total Scheduled Fine Art Coverage: EUR 18,400,000 on an agreed-value all-risk basis including international transit and Venice Biennale exhibition endorsement. Includes certified Sotheby's provenance and condition reports for 14 post-war European canvases.",
+    "summary": "EUR 18.4M Chubb all-risk fine art insurance policy and Sotheby's provenance appraisal for Zoë Laurent's Geneva and Paris collection."
+  },
+  {
+    "client_email": "zoe.laurent.art@gmail.com",
+    "category": "income_and_source_of_wealth",
+    "title": "Notarized Estate Inheritance Attestation & Art Basel Sale Settlement",
+    "content": "Prepared by Étude Notariale de Genève for AML source of wealth review. Confirms Zoë Laurent inherited a EUR 12,000,000 securities and fine art estate from the late Henri Laurent in 2021, supplemented by EUR 4,200,000 in net gallery commission proceeds from Art Basel 2025/2026 private treaty sales.",
+    "summary": "Geneva notarized source of wealth attestation confirming EUR 12M family inheritance and EUR 4.2M in Art Basel gallery sale proceeds."
+  },
+  {
+    "client_email": "zoe.laurent.art@gmail.com",
+    "category": "debt_credit_and_liabilities",
+    "title": "Lombard Odier Multi-Currency Securities-Backed Credit Facility",
+    "content": "Borrower: Zoë Laurent. Facility Limit: CHF 6,000,000 revolving Lombard loan secured by a first-priority pledge over Custody Portfolio #LO-77291 (loan-to-value covenant max 65%). Interest Rate: SARON + 1.15% p.a. Drawn balance as of November 2026: CHF 2,100,000 used for short-term auction acquisition bridge financing.",
+    "summary": "CHF 6M Lombard Odier securities-backed revolving credit line (CHF 2.1M drawn at SARON + 1.15%) for art acquisition bridge financing."
+  }
+]

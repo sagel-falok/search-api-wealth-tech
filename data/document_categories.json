@@ -1,0 +1,270 @@
+[
+  {
+    "category": "identity_verification",
+    "name": "Identity Verification & Civil Status",
+    "summary": "Official government-issued documents used to verify a client's legal identity, nationality, age, and civil or marital status for KYC compliance.",
+    "examples": [
+      "Passport",
+      "Driver's License",
+      "National Identity Card",
+      "Birth Certificate",
+      "Social Security Card / National Insurance Card",
+      "Marriage Certificate",
+      "Divorce Decree / Final Judgment of Dissolution",
+      "Pre-Nuptial or Post-Nuptial Agreement",
+      "Permanent Resident Card (Green Card) / Visa",
+      "Certificate of Naturalization or Citizenship",
+      "Name Change Certificate / Deed Poll"
+    ]
+  },
+  {
+    "category": "address_proof",
+    "name": "Proof of Address & Residency",
+    "summary": "Documents confirming a client's current residential address and domicile for regulatory, tax residency, and AML verification.",
+    "examples": [
+      "Utility Bill (Electricity, Gas, Water, Sewage)",
+      "Internet, Landline, or Cable TV Bill",
+      "Municipal / Council / Property Tax Bill",
+      "Residential Lease or Tenancy Agreement",
+      "Recent Mortgage Statement",
+      "Bank or Credit Card Statement Showing Residential Address",
+      "Government-Issued Residency Certificate",
+      "Voter Registration Card",
+      "Homeowner's or Renter's Insurance Policy Declaration Page",
+      "Official Tax Assessment Notice Showing Address"
+    ]
+  },
+  {
+    "category": "income_and_source_of_wealth",
+    "name": "Income & Source of Wealth Verification",
+    "summary": "Evidence demonstrating how a client earns regular income and how their overall net worth or investable capital was accumulated.",
+    "examples": [
+      "Payslips / Pay Stubs",
+      "Employment Contract or Offer Letter",
+      "Executive Compensation & Bonus Schedule",
+      "Stock Option / RSU / Equity Grant Agreement",
+      "Dividend Vouchers & Distribution Statements",
+      "Share Purchase or Business Sale / Exit Agreement (SPA)",
+      "M&A Closing Statement / Liquidity Event Proof",
+      "Inheritance Distribution Letter or Grant of Probate",
+      "Gift Deed / Notarized Letter of Gift",
+      "Royalty, Licensing, or Patent Income Statement",
+      "Pension or Social Security Award Letter",
+      "Audited Company Financial Statements for Business Owners"
+    ]
+  },
+  {
+    "category": "tax_filings_and_reporting",
+    "name": "Tax Filings & Regulatory Tax Reporting",
+    "summary": "Domestic and international tax returns, annual income statements, and cross-border tax compliance certifications.",
+    "examples": [
+      "Individual Income Tax Return (Form 1040, SA100)",
+      "Wage and Tax Statement (Form W-2, P60, P45)",
+      "Investment & Dividend Tax Forms (Form 1099-DIV, 1099-INT, 1099-B)",
+      "Partnership / S-Corp Schedule K-1",
+      "Foreign Status & Withholding Certificates (Form W-8BEN, W-8BEN-E, W-9)",
+      "FATCA & CRS Self-Certification Form",
+      "Foreign Bank and Financial Accounts Report (FBAR / FinCEN Form 114)",
+      "Gift and Estate Tax Return (Form 706, Form 709)",
+      "Capital Gains & Losses Realization Schedule",
+      "Tax Residency Certificate",
+      "Property / Land Tax Assessment"
+    ]
+  },
+  {
+    "category": "banking_and_cash_management",
+    "name": "Banking, Treasury & Cash Flow",
+    "summary": "Records of liquid cash holdings, bank accounts, money market deposits, wire transfers, and proof of funds.",
+    "examples": [
+      "Checking / Current Account Statement",
+      "High-Yield Savings Account Statement",
+      "Certificate of Deposit (CD) / Fixed Term Deposit Confirmation",
+      "Money Market Account Statement",
+      "Wire Transfer / SWIFT Confirmation Receipt",
+      "Proof of Funds / Bank Comfort Letter",
+      "Bank Reference Letter",
+      "Direct Debit / ACH Authorization Form",
+      "Foreign Exchange (FX) Trade Confirmation",
+      "Safe Deposit Box Inventory & Agreement"
+    ]
+  },
+  {
+    "category": "public_investments_and_brokerage",
+    "name": "Public Market Investments & Brokerage",
+    "summary": "Statements and trade records for publicly traded securities, custodial accounts, mutual funds, ETFs, and fixed-income holdings.",
+    "examples": [
+      "Monthly or Quarterly Brokerage Account Statement",
+      "Custodial Account Holding Report",
+      "Consolidated Portfolio Valuation & Performance Report",
+      "Trade Confirmation Slip (Equities, Bonds, Options)",
+      "Fixed Income / Bond Maturity & Coupon Schedule",
+      "Mutual Fund & ETF Prospectus / Fact Sheet",
+      "Securities Transfer Form (ACATS / In-Kind Transfer)",
+      "Stock Certificate / Direct Registration System (DRS) Advice",
+      "Dividend Reinvestment Plan (DRIP) Statement",
+      "Cost Basis & Tax Lot Report"
+    ]
+  },
+  {
+    "category": "alternative_and_private_investments",
+    "name": "Private Markets & Alternative Investments",
+    "summary": "Legal and financial documentation for private equity, venture capital, hedge funds, private credit, crypto, and collectibles.",
+    "examples": [
+      "Private Placement Memorandum (PPM)",
+      "Limited Partnership Agreement (LPA)",
+      "Subscription Agreement & Investor Questionnaire",
+      "Capital Call Notice",
+      "Distribution Notice",
+      "Quarterly GP / Fund Capital Account Statement (PCAP)",
+      "SAFE (Simple Agreement for Future Equity) or Convertible Note",
+      "Angel / Venture Cap Table & Share Certificate",
+      "Hedge Fund Side Letter & Redemption Request",
+      "Digital Asset / Cryptocurrency Custody & Wallet Statement",
+      "Art, Wine, or Luxury Collectibles Provenance & Appraisal Certificate"
+    ]
+  },
+  {
+    "category": "retirement_and_pensions",
+    "name": "Retirement Accounts & Pension Plans",
+    "summary": "Statements, plan rules, and rollover records for employer-sponsored retirement plans, individual retirement accounts, and pensions.",
+    "examples": [
+      "401(k) / 403(b) / 457 Plan Statement",
+      "Traditional, Roth, or SEP IRA Statement",
+      "Defined Benefit / Final Salary Pension Annual Statement",
+      "Self-Invested Personal Pension (SIPP) Valuation",
+      "Pension Rollover / Transfer Authorization Form",
+      "Required Minimum Distribution (RMD) Calculation Notice",
+      "Deferred Compensation Plan Schedule",
+      "Social Security Benefit Estimate Statement"
+    ]
+  },
+  {
+    "category": "estate_planning_and_trusts",
+    "name": "Estate Planning, Wills & Trusts",
+    "summary": "Fiduciary and legal instruments governing wealth transfer, succession, guardianship, incapacity, and trust administration.",
+    "examples": [
+      "Last Will and Testament",
+      "Codicil to a Will",
+      "Revocable Living Trust Agreement",
+      "Irrevocable Trust Deed (GRAT, ILIT, Dynasty Trust, Charitable Remainder Trust)",
+      "Letter of Wishes",
+      "Durable Financial Power of Attorney (POA)",
+      "Healthcare Power of Attorney / Healthcare Proxy",
+      "Advance Healthcare Directive / Living Will",
+      "Beneficiary Designation Form (TOD / POD)",
+      "Certificate of Trust / Trust Abstract",
+      "Trustee Appointment, Acceptance, or Resignation Deed",
+      "Trust Accounting & Beneficiary Distribution Schedule"
+    ]
+  },
+  {
+    "category": "real_estate_and_property",
+    "name": "Real Estate & Property Holdings",
+    "summary": "Ownership records, valuations, purchase contracts, and management documents for residential, commercial, and land properties.",
+    "examples": [
+      "Property Title Deed / Land Registry Extract",
+      "Real Estate Purchase and Sale Agreement",
+      "Closing Disclosure / HUD-1 Settlement Statement",
+      "Independent Real Estate Appraisal / Valuation Report",
+      "Title Insurance Policy",
+      "Commercial or Residential Lease Agreement (Landlord Income)",
+      "Property Management Agreement",
+      "Homeowners Association (HOA) Covenants & Fee Statement",
+      "Real Estate Escrow Statement",
+      "1031 Like-Kind Exchange Documentation"
+    ]
+  },
+  {
+    "category": "debt_credit_and_liabilities",
+    "name": "Loans, Mortgages & Liabilities",
+    "summary": "Contracts and statements for personal or structured borrowing, mortgages, lines of credit, and debt obligations.",
+    "examples": [
+      "Mortgage Loan Agreement & Amortization Schedule",
+      "Home Equity Line of Credit (HELOC) Statement",
+      "Securities-Backed Line of Credit (SBLOC) / Lombard Loan Agreement",
+      "Margin Loan Account Statement",
+      "Personal or Business Promissory Note",
+      "Personal Guarantee Agreement",
+      "Credit Bureau Report (Equifax, Experian, TransUnion)",
+      "Credit Card Summary Statement",
+      "Auto, Aviation, or Yacht Financing Agreement",
+      "Loan Payoff Letter / Lien Release Certificate"
+    ]
+  },
+  {
+    "category": "insurance_and_risk_management",
+    "name": "Insurance Policies & Annuities",
+    "summary": "Contracts and policy schedules covering life, health, disability, property, casualty, umbrella liability, and annuity products.",
+    "examples": [
+      "Term or Whole Life Insurance Policy Schedule",
+      "Universal or Variable Life Insurance In-Force Illustration",
+      "Fixed or Variable Annuity Contract & Statement",
+      "Long-Term Care (LTC) Insurance Policy",
+      "Disability / Income Protection Insurance Policy",
+      "Personal Umbrella / Excess Liability Policy",
+      "Homeowners, Auto, and Valuable Articles (Fine Art / Jewelry) Policy",
+      "Directors and Officers (D&O) or Key Person Insurance Policy",
+      "Health & Medical Insurance Coverage Summary"
+    ]
+  },
+  {
+    "category": "corporate_and_entity_governance",
+    "name": "Corporate, Family Office & Entity Governance",
+    "summary": "Formation, ownership, and governance documents for LLCs, holding companies, partnerships, family offices, and SPVs.",
+    "examples": [
+      "Articles of Incorporation / Certificate of Formation",
+      "Corporate Bylaws or LLC Operating Agreement",
+      "Shareholder Agreement / Buy-Sell Agreement",
+      "Register of Directors and Beneficial Owners (UBO Register)",
+      "Certificate of Good Standing / Incumbency Certificate",
+      "Board Resolution & Corporate Meeting Minutes",
+      "Entity Organizational Structure Chart",
+      "Employer Identification Number (EIN) Confirmation Letter (CP 575)",
+      "Power of Representation / Authorized Signatory List"
+    ]
+  },
+  {
+    "category": "philanthropy_and_charitable_giving",
+    "name": "Philanthropy, Foundations & Charitable Giving",
+    "summary": "Records relating to donor-advised funds, private family foundations, charitable trusts, and tax-deductible donations.",
+    "examples": [
+      "Donor-Advised Fund (DAF) Account Statement & Grant Confirmation",
+      "Private Family Foundation Charter & IRS 501(c)(3) Determination Letter",
+      "Charitable Gift Acknowledgment / Tax Receipt",
+      "Endowment Pledge Agreement",
+      "Non-Cash / Appreciated Securities Donation Form (Form 8283)",
+      "Foundation Annual Return (Form 990-PF)"
+    ]
+  },
+  {
+    "category": "advisory_agreements_and_financial_planning",
+    "name": "Advisory Agreements, Compliance & Financial Plans",
+    "summary": "Advisor-client contracts, regulatory disclosures, suitability profiles, and holistic financial planning deliverables.",
+    "examples": [
+      "Investment Management / Wealth Advisory Agreement",
+      "Investment Policy Statement (IPS)",
+      "Client Risk Tolerance & Suitability Questionnaire",
+      "Accredited Investor / Qualified Purchaser / Professional Client Certification",
+      "AML / KYC Onboarding & PEP Screening Dossier",
+      "Form ADV / Fee Schedule & Conflict of Interest Disclosure",
+      "Comprehensive Financial Plan & Cash Flow Projection",
+      "Net Worth Balance Sheet Summary",
+      "Advisor-Client Meeting Notes & Action Items",
+      "Discretionary Trading & Custodial Limited Power of Attorney (LPOA)"
+    ]
+  },
+  {
+    "category": "other",
+    "name": "Other / Miscellaneous Documents",
+    "summary": "Unclassified, bespoke, or general correspondence documents that do not fit into standard wealth management, KYC, tax, legal, or investment categories.",
+    "examples": [
+      "General Client Correspondence & Emails",
+      "Miscellaneous Handwritten Notes or Memos",
+      "Press Releases or Media Clippings",
+      "Travel Itineraries & Concierge Requests",
+      "Educational Certificates, Diplomas, or CV / Resume",
+      "Uncategorized Third-Party Letters or Notices",
+      "Supporting Attachments Pending Classification"
+    ]
+  }
+]

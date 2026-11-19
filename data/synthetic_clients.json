@@ -1,0 +1,230 @@
+[
+  {
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "john.doe@neviswealth.com",
+    "description": "Managing Director at NevisWealth. High-net-worth fintech executive looking for comprehensive estate planning, revocable living trust setup, and multi-jurisdictional tax optimization between London and New York.",
+    "social_links": [
+      "https://linkedin.com/in/johndoe-nevis",
+      "https://x.com/johndoe_wealth"
+    ]
+  },
+  {
+    "first_name": "Jane",
+    "last_name": "Doe",
+    "email": "jane.doe@neviswealth.com",
+    "description": "Chief Operating Officer at NevisWealth and spouse of John Doe. Focused on philanthropic giving, donor-advised funds (DAF), and family foundation governance.",
+    "social_links": [
+      "https://linkedin.com/in/janedoe-nevis"
+    ]
+  },
+  {
+    "first_name": "Jonathan",
+    "last_name": "Doe",
+    "email": "j.doe@neviswealth.com",
+    "description": "Head of Quantitative Research at NevisWealth. Interested in alternative investments, private equity capital calls, and concentrated stock option diversification.",
+    "social_links": [
+      "https://linkedin.com/in/jonathandoe-quant",
+      "https://github.com/jdoe-quant"
+    ]
+  },
+  {
+    "first_name": "Marcus",
+    "last_name": "Vance",
+    "email": "marcus.vance@neviswealth.com",
+    "description": "VP of Institutional Partnerships. Needs Lombard lending (securities-backed line of credit) for a residential property acquisition in Zurich.",
+    "social_links": [
+      "https://linkedin.com/in/marcusvance"
+    ]
+  },
+  {
+    "first_name": "Elena",
+    "last_name": "Rostova",
+    "email": "elena.rostova@apexcapital.io",
+    "description": "General Partner at Apex Capital focusing on Series B enterprise AI startups. Requires carried interest structuring, Delaware statutory trusts, and QSBS (Qualified Small Business Stock) tax planning.",
+    "social_links": [
+      "https://linkedin.com/in/elenarostova-vc",
+      "https://x.com/erostova_apex"
+    ]
+  },
+  {
+    "first_name": "David",
+    "last_name": "Chen",
+    "email": "d.chen@apexcapital.io",
+    "description": "Managing Partner at Apex Capital. Dual US-Singapore tax resident seeking FATCA and CRS cross-border compliance, foreign bank account reporting (FBAR), and Asian family office administration.",
+    "social_links": [
+      "https://linkedin.com/in/davidchen-apex"
+    ]
+  },
+  {
+    "first_name": "Tariq",
+    "last_name": "Al-Mansoor",
+    "email": "tariq.al-mansoor@apexcapital.io",
+    "description": "Sovereign wealth advisor and venture partner at Apex Capital based in Dubai and London. Specializes in Sharia-compliant private credit, sukuk fixed income, and commercial real estate syndications.",
+    "social_links": [
+      "https://linkedin.com/in/tariq-al-mansoor"
+    ]
+  },
+  {
+    "first_name": "Sarah",
+    "last_name": "O'Connor",
+    "email": "sarah.oconnor@apexcapital.io",
+    "description": "Chief Legal Officer at Apex Capital. Preparing for an upcoming secondary liquidity event; needs umbrella liability insurance review, irrevocable life insurance trust (ILIT), and 401(k) rollover advice.",
+    "social_links": [
+      "https://linkedin.com/in/sarah-oconnor-legal"
+    ]
+  },
+  {
+    "first_name": "Arjun",
+    "last_name": "Patel",
+    "email": "dr.arjun.patel@vanguardia-bio.com",
+    "description": "Co-founder and Chief Scientific Officer at Vanguardia Therapeutics. Holds substantial pre-IPO biotech equity grants, patent royalty streams, and Rule 10b5-1 trading plan documentation.",
+    "social_links": [
+      "https://linkedin.com/in/dr-arjun-patel-bio"
+    ]
+  },
+  {
+    "first_name": "Chloé",
+    "last_name": "Dubois",
+    "email": "chloe.dubois@vanguardia-bio.com",
+    "description": "SVP of Clinical Operations at Vanguardia Bio. French national residing in Boston; requires cross-border pension consolidation, US Green Card tax residency planning, and education trust setup for two children.",
+    "social_links": [
+      "https://linkedin.com/in/chloedubois"
+    ]
+  },
+  {
+    "first_name": "Henrik",
+    "last_name": "Lindqvist",
+    "email": "henrik.lindqvist@vanguardia-bio.com",
+    "description": "Board Director at Vanguardia Bio and former pharmaceutical CEO. Portfolio heavily weighted in Nordic equities, sovereign bonds, and timberland real assets.",
+    "social_links": []
+  },
+  {
+    "first_name": "Mei-Ling",
+    "last_name": "Wong",
+    "email": "mei-ling.wong@vanguardia-bio.com",
+    "description": null,
+    "social_links": [
+      "https://linkedin.com/in/meilingwong-bio"
+    ]
+  },
+  {
+    "first_name": "Alistair",
+    "last_name": "Sterling",
+    "email": "alistair.sterling@meridian-ventures.co.uk",
+    "description": "Senior Partner at Meridian Ventures in Mayfair, London. Focuses on UK Self-Invested Personal Pensions (SIPP), Enterprise Investment Scheme (EIS) tax relief, and Cotswolds agricultural estate succession.",
+    "social_links": [
+      "https://linkedin.com/in/alistair-sterling-uk"
+    ]
+  },
+  {
+    "first_name": "Priya",
+    "last_name": "Patel",
+    "email": "priya.patel@meridian-ventures.co.uk",
+    "description": "Principal at Meridian Ventures covering European fintech and climate tech. Looking for first-time prime London mortgage structuring and discretionary portfolio management.",
+    "social_links": [
+      "https://linkedin.com/in/priyapatel-vc",
+      "https://x.com/priyapatel_uk"
+    ]
+  },
+  {
+    "first_name": "Oliver",
+    "last_name": "Smith-Connors",
+    "email": "oliver.smith-connors@meridian-ventures.co.uk",
+    "description": "Operating Partner at Meridian Ventures. Recently exited a B2B SaaS company for GBP 45M; onboarding KYC, proof of address, and source of wealth verification in progress.",
+    "social_links": [
+      "https://linkedin.com/in/oliversmithconnors"
+    ]
+  },
+  {
+    "first_name": "Victoria",
+    "last_name": "Kensington",
+    "email": "victoria.kensington@meridian-ventures.co.uk",
+    "description": "Head of Investor Relations at Meridian Ventures. Manages family trust distributions, fine art and vintage watch appraisals, and charitable endowment pledges.",
+    "social_links": null
+  },
+  {
+    "first_name": "Lukas",
+    "last_name": "Müller",
+    "email": "lukas.mueller@solaris-energy.de",
+    "description": "Founder and CEO of Solaris Energy GmbH in Munich. Clean-tech entrepreneur after a EUR 120M majority buyout; focused on ESG impact investing, German GmbH holding structures, and renewable infrastructure funds.",
+    "social_links": [
+      "https://linkedin.com/in/lukas-mueller-solaris"
+    ]
+  },
+  {
+    "first_name": "Hanna",
+    "last_name": "Schmidt",
+    "email": "hanna.schmidt@solaris-energy.de",
+    "description": "Chief Financial Officer at Solaris Energy. Seeking euro-denominated fixed-term treasury deposits, currency hedging against USD/CHF, and executive deferred compensation planning.",
+    "social_links": [
+      "https://linkedin.com/in/hannaschmidt-cfo"
+    ]
+  },
+  {
+    "first_name": "Matteo",
+    "last_name": "Rossi",
+    "email": "matteo.rossi@solaris-energy.de",
+    "description": "VP of Grid Engineering at Solaris Energy. Italian citizen working in Berlin; holds residential rental properties in Milan and Lake Como requiring property management and cross-border tax filings.",
+    "social_links": [
+      "https://linkedin.com/in/matteorossi-eng"
+    ]
+  },
+  {
+    "first_name": "Sofía",
+    "last_name": "Mendoza",
+    "email": "sofia.mendoza@solaris-energy.de",
+    "description": "Director of Project Finance at Solaris Energy. Interested in green bonds, inflation-protected securities, and family wealth transfer for beneficiaries in Madrid and Frankfurt.",
+    "social_links": [
+      "https://linkedin.com/in/sofiamendoza-finance"
+    ]
+  },
+  {
+    "first_name": "Richard",
+    "last_name": "Whitaker",
+    "email": "r.whitaker1958@gmail.com",
+    "description": "Retired cardiothoracic surgeon and angel investor. Co-founder and early seed backer of NevisWealth. Currently managing required minimum distributions (RMDs), defined benefit pension annuities, and long-term care insurance.",
+    "social_links": [
+      "https://linkedin.com/in/richard-whitaker-md"
+    ]
+  },
+  {
+    "first_name": "Zoë",
+    "last_name": "Laurent",
+    "email": "zoe.laurent.art@gmail.com",
+    "description": "Contemporary art gallerist and collector in Paris and Geneva. Wealth derived from inheritance and gallery sales; requires fine art provenance insurance, collectibles valuation, and dynasty trust administration.",
+    "social_links": [
+      "https://instagram.com/zoelaurent_galerie",
+      "https://zoelaurent.art"
+    ]
+  },
+  {
+    "first_name": "Alejandro",
+    "last_name": "Rivera",
+    "email": "alex.rivera.crypto@gmail.com",
+    "description": "Early blockchain protocol architect and Web3 founder. Holds institutional digital asset custody accounts, staked ETH/BTC positions, venture token warrants, and Puerto Rico Act 60 tax residency certificates.",
+    "social_links": [
+      "https://x.com/alexrivera_eth",
+      "https://github.com/arivera-protocol"
+    ]
+  },
+  {
+    "first_name": "Elena",
+    "last_name": "Chen",
+    "email": "elena.chen.familyoffice@gmail.com",
+    "description": "Principal of the Chen Single Family Office in San Francisco. Oversees 1031 like-kind commercial real estate exchanges, direct private credit lending, and multi-generational family governance charters.",
+    "social_links": [
+      "https://linkedin.com/in/elenachen-sfo"
+    ]
+  },
+  {
+    "first_name": "Jean-Luc",
+    "last_name": "Moreau",
+    "email": "jeanluc.moreau77@gmail.com",
+    "description": "Former professional ATP tennis player and hospitality entrepreneur in Monaco. Invests in luxury boutique hotels, yacht charter syndicates, and global dividend growth equities.",
+    "social_links": [
+      "https://linkedin.com/in/jeanlucmoreau",
+      "https://x.com/jlmoreau_tennis"
+    ]
+  }
+]
