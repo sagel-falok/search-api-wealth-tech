@@ -4,9 +4,23 @@ import os
 import uuid
 from collections.abc import AsyncGenerator
 from datetime import datetime
+from typing import Any
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text, false, func
-from sqlalchemy.dialects.postgresql import ARRAY, UUID
+from pgvector.sqlalchemy import Vector
+from sqlalchemy import (
+    Boolean,
+    Computed,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    false,
+    func,
+    text,
+)
+from sqlalchemy.dialects.postgresql import ARRAY, TSVECTOR, UUID
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
@@ -59,6 +73,35 @@ class DocumentCategoryModel(Base):
         nullable=True,
         default=list,
     )
+    search_vector: Mapped[Any] = mapped_column(
+        TSVECTOR,
+        Computed(
+            "setweight(to_tsvector('english', coalesce(replace(category, '_', ' '), '') || ' ' || coalesce(name, '')), 'A') || "
+            "setweight(to_tsvector('english', coalesce(summary, '')), 'B')",
+            persisted=True,
+        ),
+    )
+    category_search_text: Mapped[str] = mapped_column(
+        Text,
+        Computed(
+            "lower(coalesce(replace(category, '_', ' '), '') || ' ' || coalesce(name, '') || ' ' || coalesce(summary, ''))",
+            persisted=True,
+        ),
+    )
+
+    __table_args__ = (
+        Index(
+            "ix_document_categories_search_vector",
+            "search_vector",
+            postgresql_using="gin",
+        ),
+        Index(
+            "ix_document_categories_trgm",
+            "category_search_text",
+            postgresql_using="gin",
+            postgresql_ops={"category_search_text": "gin_trgm_ops"},
+        ),
+    )
 
     documents: Mapped[list[DocumentModel]] = relationship(
         "DocumentModel",
@@ -94,6 +137,40 @@ class ClientModel(Base):
         default=False,
         server_default=false(),
         index=True,
+    )
+    search_vector: Mapped[Any] = mapped_column(
+        TSVECTOR,
+        Computed(
+            "setweight(to_tsvector('english', coalesce(first_name, '') || ' ' || coalesce(last_name, '') || ' ' || coalesce(email, '') || ' ' || regexp_replace(coalesce(email, ''), '[.@_+-]+', ' ', 'g')), 'A') || "
+            "setweight(to_tsvector('english', coalesce(description, '')), 'B')",
+            persisted=True,
+        ),
+    )
+    identity_search_text: Mapped[str] = mapped_column(
+        Text,
+        Computed(
+            "lower(coalesce(first_name, '') || ' ' || coalesce(last_name, '') || ' ' || coalesce(email, '') || ' ' || regexp_replace(coalesce(email, ''), '[\\s._@-]+', '', 'g') || ' ' || coalesce(first_name, '') || coalesce(last_name, ''))",
+            persisted=True,
+        ),
+    )
+
+    __table_args__ = (
+        Index(
+            "ix_clients_search_vector",
+            "search_vector",
+            postgresql_using="gin",
+        ),
+        Index(
+            "ix_clients_identity_trgm",
+            "identity_search_text",
+            postgresql_using="gin",
+            postgresql_ops={"identity_search_text": "gin_trgm_ops"},
+        ),
+        Index(
+            "ix_clients_description_trgm",
+            text("lower(coalesce(description, '')) gin_trgm_ops"),
+            postgresql_using="gin",
+        ),
     )
 
     documents: Mapped[list[DocumentModel]] = relationship(
@@ -139,6 +216,28 @@ class DocumentModel(Base):
         server_default=func.now(),
         nullable=False,
     )
+    search_vector: Mapped[Any] = mapped_column(
+        TSVECTOR,
+        Computed(
+            "setweight(to_tsvector('english', coalesce(title, '')), 'A') || "
+            "setweight(to_tsvector('english', coalesce(summary, '')), 'B') || "
+            "setweight(to_tsvector('english', coalesce(content, '')), 'C')",
+            persisted=True,
+        ),
+    )
+
+    __table_args__ = (
+        Index(
+            "ix_documents_search_vector",
+            "search_vector",
+            postgresql_using="gin",
+        ),
+        Index(
+            "ix_documents_title_summary_trgm",
+            text("lower(coalesce(title, '') || ' ' || coalesce(summary, '')) gin_trgm_ops"),
+            postgresql_using="gin",
+        ),
+    )
 
     client: Mapped[ClientModel] = relationship(
         "ClientModel",
@@ -148,11 +247,59 @@ class DocumentModel(Base):
         "DocumentCategoryModel",
         back_populates="documents",
     )
+    chunks: Mapped[list[DocumentChunkModel]] = relationship(
+        "DocumentChunkModel",
+        back_populates="document",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+    )
+
+    @property
+    def category(self) -> str | None:
+        if "category_rel" in self.__dict__ and self.category_rel is not None:
+            return self.category_rel.category
+        return None
+
+
+class DocumentChunkModel(Base):
+    __tablename__ = "document_chunks"
+
+    id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        primary_key=True,
+        default=uuid.uuid4,
+    )
+    document_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True),
+        ForeignKey("documents.id", ondelete="CASCADE"),
+        index=True,
+        nullable=False,
+    )
+    chunk_index: Mapped[int] = mapped_column(Integer, nullable=False)
+    chunk_text: Mapped[str] = mapped_column(Text, nullable=False)
+    embedding: Mapped[Any] = mapped_column(Vector(768), nullable=False)
+
+    __table_args__ = (
+        Index(
+            "ix_document_chunks_embedding_hnsw",
+            "embedding",
+            postgresql_using="hnsw",
+            postgresql_ops={"embedding": "vector_cosine_ops"},
+        ),
+    )
+
+    document: Mapped[DocumentModel] = relationship(
+        "DocumentModel",
+        back_populates="chunks",
+    )
 
 
 async def init_db() -> None:
-    """Create database tables if they do not exist."""
+    """Enable search extensions and create database tables if they do not exist."""
     async with engine.begin() as conn:
+        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS pg_trgm"))
+        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS unaccent"))
+        await conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
         await conn.run_sync(Base.metadata.create_all)
 
 

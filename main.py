@@ -12,7 +12,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 import repo
 from db import get_db, init_db
-from schemas import Client, ClientCreate, Document, DocumentCreate
+from schemas import (
+    Client,
+    ClientCreate,
+    ClientSearchResult,
+    Document,
+    DocumentCreate,
+    DocumentSearchResult,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -162,6 +169,24 @@ async def search_endpoint(
             examples=["NevisWealth", "address proof"],
         ),
     ],
+    session: Annotated[AsyncSession, Depends(get_db)],
 ) -> list[dict[str, Any]]:
-    _ = q
-    return []
+    client_rows = await repo.search_clients_with_scores(session, q)
+    document_rows = await repo.search_documents_with_scores(session, q)
+
+    combined: list[tuple[float, dict[str, Any]]] = [
+        (
+            score,
+            ClientSearchResult.model_validate(client).model_dump(),
+        )
+        for client, score in client_rows
+    ] + [
+        (
+            score,
+            DocumentSearchResult.model_validate(doc).model_dump(),
+        )
+        for doc, score in document_rows
+    ]
+
+    combined.sort(key=lambda item: item[0], reverse=True)
+    return [payload for _, payload in combined]

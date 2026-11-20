@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from pydantic import AfterValidator, BaseModel, BeforeValidator, ConfigDict, EmailStr, Field
@@ -131,6 +131,14 @@ class Client(BaseModel):
     )
 
 
+class ClientSearchResult(Client):
+    type: Literal["client"] = Field(
+        default="client",
+        description="Search result entity type",
+        examples=["client"],
+    )
+
+
 class DocumentCreate(BaseModel):
     title: str = Field(
         ...,
@@ -186,6 +194,19 @@ class Document(BaseModel):
         ...,
         description="Timestamp when the document was created",
         examples=["2026-11-19T12:00:00Z"],
+    )
+
+
+class DocumentSearchResult(Document):
+    type: Literal["document"] = Field(
+        default="document",
+        description="Search result entity type",
+        examples=["document"],
+    )
+    category: str | None = Field(
+        default=None,
+        description="Machine-friendly slug of the assigned document category",
+        examples=["address_proof"],
     )
 
 
