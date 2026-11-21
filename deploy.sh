@@ -99,7 +99,7 @@ gcloud run deploy "$SERVICE_NAME" \
   --cpu "$CPU" \
   --min-instances "$MIN_INSTANCES" \
   --max-instances "$MAX_INSTANCES" \
-  --set-env-vars "^||^DATABASE_URL=${DEPLOY_DB_URL}||OPENAI_API_KEY=${OPENAI_API_KEY:-}||OPENAI_MODEL=${OPENAI_MODEL:-gpt-6-luna}" \
+  --set-env-vars "^||^DATABASE_URL=${DEPLOY_DB_URL}||OPENAI_API_KEY=${PROD_OPENAI_API_KEY:-}||OPENAI_MODEL=${OPENAI_MODEL:-gpt-6-luna}" \
   --quiet
 
 SERVICE_URL="$(gcloud run services describe "$SERVICE_NAME" --project "$PROJECT_ID" --region "$REGION" --format='value(status.url)')"

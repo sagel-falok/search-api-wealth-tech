@@ -11,8 +11,13 @@ from seed import seed_all
 
 
 @pytest_asyncio.fixture(scope="module", loop_scope="module", autouse=True)
-async def seeded_db() -> None:
+async def seeded_db() -> AsyncGenerator[None, None]:
+    from db import engine
+
+    await engine.dispose()
     await seed_all()
+    yield
+    await engine.dispose()
 
 
 @pytest_asyncio.fixture(loop_scope="module")
