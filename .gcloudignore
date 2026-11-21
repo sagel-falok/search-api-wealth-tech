@@ -1,0 +1,24 @@
+# Do not upload secrets, local data, or virtualenvs to Google Cloud Build
+.git/
+.gitignore
+.env
+.env.*
+gcp_key.json
+*gcp*key*.json
+data/
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+test_*.py
+*.md
+*.pdf
+docker-compose.yml
+*.sh

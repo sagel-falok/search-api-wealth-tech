@@ -180,6 +180,11 @@ class Document(BaseModel):
         description="Optional ID of the assigned document category",
         examples=["9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"],
     )
+    category: str | None = Field(
+        default=None,
+        description="Machine-friendly slug of the assigned document category",
+        examples=["address_proof"],
+    )
     title: str = Field(..., examples=["Utility Bill - October 2026"])
     content: str = Field(
         ...,
@@ -202,11 +207,6 @@ class DocumentSearchResult(Document):
         default="document",
         description="Search result entity type",
         examples=["document"],
-    )
-    category: str | None = Field(
-        default=None,
-        description="Machine-friendly slug of the assigned document category",
-        examples=["address_proof"],
     )
 
 

@@ -16,6 +16,7 @@ from db import (
     DocumentModel,
 )
 from embeddings import build_document_chunks, embed_passages, embed_query
+from llm import analyze_document
 from schemas import (
     ClientCreate,
     ClientUpdate,
@@ -301,6 +302,45 @@ async def search_clients(
 
 
 
+async def _populate_document_chunks_and_vectors(
+    session: AsyncSession,
+    document: DocumentModel,
+    *,
+    client: ClientModel | None = None,
+    category_model: DocumentCategoryModel | None = None,
+) -> list[DocumentChunkModel]:
+    """Build contextualized chunks and 768-d embeddings for a document and add them to the session."""
+    chunk_texts = build_document_chunks(
+        title=document.title,
+        content=document.content,
+        summary=document.summary,
+        client_first_name=client.first_name if client else None,
+        client_last_name=client.last_name if client else None,
+        client_email=client.email if client else None,
+        category_slug=category_model.category if category_model else None,
+        category_name=category_model.name if category_model else None,
+        category_summary=category_model.summary if category_model else None,
+        category_examples=category_model.examples if category_model else None,
+    )
+    if not chunk_texts:
+        return []
+
+    embeddings = embed_passages(chunk_texts)
+    created_chunks: list[DocumentChunkModel] = []
+    for idx, (chunk_text, embedding) in enumerate(
+        zip(chunk_texts, embeddings, strict=True)
+    ):
+        chunk = DocumentChunkModel(
+            document_id=document.id,
+            chunk_index=idx,
+            chunk_text=chunk_text,
+            embedding=embedding,
+        )
+        session.add(chunk)
+        created_chunks.append(chunk)
+    return created_chunks
+
+
 async def create_document(
     session: AsyncSession,
     client_id: UUID,
@@ -308,16 +348,71 @@ async def create_document(
     *,
     is_synthetic: bool = False,
 ) -> DocumentModel:
-    document = DocumentModel(
-        client_id=client_id,
+    """
+    Create a client document with:
+    1. OpenAI Structured Output enrichment (gpt-6-luna default) for summary & category classification
+       using the defined document categories (gracefully falling back to empty if unconfigured).
+    2. Contextualized document chunking and 768-d vector embedding generation in document_chunks.
+    """
+    client = await get_client(session, client_id)
+
+    db_categories = await list_document_categories(session)
+    categories_by_slug = {cat.category: cat for cat in db_categories}
+    defined_categories = [
+        DocumentCategoryCreate(
+            category=cat.category,
+            name=cat.name,
+            summary=cat.summary,
+            examples=cat.examples or [],
+        )
+        for cat in db_categories
+    ]
+
+    analysis = await analyze_document(
         title=data.title,
         content=data.content,
+        categories=defined_categories,
+    )
+
+    summary: str | None = None
+    category_id: UUID | None = None
+    category_model: DocumentCategoryModel | None = None
+
+    if analysis is not None:
+        summary = analysis.summary
+        category_model = categories_by_slug.get(analysis.category)
+        if category_model is None:
+            category_model = await get_document_category_by_slug(
+                session, analysis.category
+            )
+        if category_model is not None:
+            category_id = category_model.id
+
+    document = DocumentModel(
+        client_id=client_id,
+        category_id=category_id,
+        title=data.title,
+        content=data.content,
+        summary=summary,
         is_synthetic=is_synthetic,
     )
     session.add(document)
+    await session.flush()
+
+    await _populate_document_chunks_and_vectors(
+        session,
+        document,
+        client=client,
+        category_model=category_model,
+    )
+
     await session.commit()
-    await session.refresh(document)
-    return document
+    result = await session.execute(
+        select(DocumentModel)
+        .options(selectinload(DocumentModel.category_rel))
+        .where(DocumentModel.id == document.id)
+    )
+    return result.scalar_one()
 
 
 async def sync_synthetic_documents(
@@ -601,7 +696,9 @@ async def get_document(
     document_id: UUID,
 ) -> DocumentModel | None:
     result = await session.execute(
-        select(DocumentModel).where(DocumentModel.id == document_id)
+        select(DocumentModel)
+        .options(selectinload(DocumentModel.category_rel))
+        .where(DocumentModel.id == document_id)
     )
     return result.scalar_one_or_none()
 
@@ -614,6 +711,7 @@ async def list_client_documents(
 ) -> Sequence[DocumentModel]:
     result = await session.execute(
         select(DocumentModel)
+        .options(selectinload(DocumentModel.category_rel))
         .where(DocumentModel.client_id == client_id)
         .order_by(DocumentModel.created_at.desc())
         .offset(skip)
@@ -635,9 +733,36 @@ async def update_document(
     for field, value in update_data.items():
         setattr(document, field, value)
 
+    await session.flush()
+
+    if any(
+        k in update_data
+        for k in ("title", "content", "summary", "category_id")
+    ):
+        await session.execute(
+            delete(DocumentChunkModel).where(
+                DocumentChunkModel.document_id == document.id
+            )
+        )
+        client = await get_client(session, document.client_id)
+        category_model: DocumentCategoryModel | None = None
+        if document.category_id is not None:
+            cat_res = await session.execute(
+                select(DocumentCategoryModel).where(
+                    DocumentCategoryModel.id == document.category_id
+                )
+            )
+            category_model = cat_res.scalar_one_or_none()
+
+        await _populate_document_chunks_and_vectors(
+            session,
+            document,
+            client=client,
+            category_model=category_model,
+        )
+
     await session.commit()
-    await session.refresh(document)
-    return document
+    return await get_document(session, document.id)
 
 
 async def delete_document(

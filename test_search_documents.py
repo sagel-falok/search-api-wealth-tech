@@ -1,15 +1,26 @@
 from __future__ import annotations
 
 from collections.abc import AsyncGenerator
+from types import SimpleNamespace
+from unittest.mock import AsyncMock, MagicMock, patch
+from uuid import UUID
 
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy import func, select
 
+import repo
 from db import AsyncSessionLocal, DocumentChunkModel
 from embeddings import build_document_chunks
+from llm import (
+    DEFAULT_OPENAI_MODEL,
+    DocumentAnalysisOutput,
+    analyze_document,
+    build_category_system_prompt,
+)
 from main import app
+from schemas import DocumentCategoryCreate
 from seed import seed_all
 
 
@@ -279,3 +290,189 @@ def test_contextual_chunking_handles_long_documents() -> None:
         assert "Document: Master Family Dynasty Trust Deed | Client: John Doe" in chunk
         assert "Content: Clause" in chunk
         assert len(chunk.split()) <= 250
+
+
+@pytest.mark.asyncio(loop_scope="module")
+async def test_analyze_document_uses_gpt_6_luna_and_defined_categories() -> None:
+    """Verify analyze_document accepts categories and calls OpenAI structured output with gpt-6-luna."""
+    async with AsyncSessionLocal() as session:
+        db_categories = await repo.list_document_categories(session)
+    categories = [
+        DocumentCategoryCreate(
+            category=cat.category,
+            name=cat.name,
+            summary=cat.summary,
+            examples=cat.examples or [],
+        )
+        for cat in db_categories
+    ]
+    assert len(categories) == 16
+    prompt = build_category_system_prompt(categories)
+    assert "address_proof" in prompt
+    assert "estate_planning_and_trusts" in prompt
+
+    expected_parsed = DocumentAnalysisOutput(
+        summary="November 2026 British Gas heating bill confirming residential address in London.",
+        category="address_proof",
+    )
+    mock_parse = AsyncMock(
+        return_value=SimpleNamespace(
+            choices=[SimpleNamespace(message=SimpleNamespace(parsed=expected_parsed))]
+        )
+    )
+    mock_client = MagicMock()
+    mock_client.beta.chat.completions.parse = mock_parse
+
+    result = await analyze_document(
+        title="British Gas Statement - Nov 2026",
+        content="British Gas residential heating statement for 42 Kensington Palace Gardens.",
+        categories=categories,
+        client=mock_client,
+    )
+    assert result is not None
+    assert result.category == "address_proof"
+    assert result.summary == expected_parsed.summary
+
+    mock_parse.assert_awaited_once()
+    call_kwargs = mock_parse.await_args.kwargs
+    assert call_kwargs["model"] == DEFAULT_OPENAI_MODEL == "gpt-6-luna"
+    response_format = call_kwargs["response_format"]
+    assert issubclass(response_format, DocumentAnalysisOutput)
+    schema = response_format.model_json_schema()
+    assert set(schema["properties"]["category"]["enum"]) == {
+        cat.category for cat in categories
+    }
+
+
+@pytest.mark.asyncio(loop_scope="module")
+async def test_create_document_pipeline_with_openai_and_chunks(
+    client: AsyncClient,
+) -> None:
+    """Verify POST /clients/{id}/documents enriches summary & category via OpenAI, stores chunks + vectors, and is searchable."""
+    async with AsyncSessionLocal() as session:
+        john = await repo.get_client_by_email(session, "john.doe@neviswealth.com")
+        assert john is not None
+        john_id = john.id
+
+    mock_analysis = DocumentAnalysisOutput(
+        summary="October 2026 Swiss cantonal wealth and property tax assessment for John Doe's Zurich residence.",
+        category="tax_filings_and_reporting",
+    )
+
+    with patch(
+        "repo.analyze_document",
+        new=AsyncMock(return_value=mock_analysis),
+    ):
+        resp = await client.post(
+            f"/clients/{john_id}/documents",
+            json={
+                "title": "Zurich Cantonal Wealth Tax Assessment 2026",
+                "content": (
+                    "Official Swiss cantonal tax assessment notice issued to John Doe "
+                    "for fiscal year 2026 covering net wealth and municipal tax obligations in Zurich."
+                ),
+            },
+        )
+
+    assert resp.status_code == 201
+    created_doc = resp.json()
+    doc_id = UUID(created_doc["id"])
+
+    try:
+        assert created_doc["summary"] == mock_analysis.summary
+        assert created_doc["category"] == "tax_filings_and_reporting"
+        assert created_doc["category_id"] is not None
+
+        # Verify chunks and 768-d vectors were created in document_chunks
+        async with AsyncSessionLocal() as session:
+            chunks = (
+                await session.execute(
+                    select(DocumentChunkModel)
+                    .where(DocumentChunkModel.document_id == doc_id)
+                    .order_by(DocumentChunkModel.chunk_index)
+                )
+            ).scalars().all()
+            assert len(chunks) >= 1
+            assert "Zurich Cantonal Wealth Tax Assessment 2026" in chunks[0].chunk_text
+            assert "Tax Filings & Regulatory Tax Reporting" in chunks[0].chunk_text
+            assert mock_analysis.summary in chunks[0].chunk_text
+            assert len(chunks[0].embedding) == 768
+
+        # Verify the newly created document is searchable semantically & lexically
+        search_resp = await client.get(
+            "/search", params={"q": "Zurich cantonal wealth tax"}
+        )
+        assert search_resp.status_code == 200
+        doc_ids = [
+            item["id"]
+            for item in search_resp.json()
+            if item["type"] == "document"
+        ]
+        assert str(doc_id) in doc_ids
+    finally:
+        async with AsyncSessionLocal() as session:
+            await repo.delete_document(session, doc_id)
+
+
+@pytest.mark.asyncio(loop_scope="module")
+async def test_create_document_pipeline_graceful_fallback_without_openai_key(
+    client: AsyncClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """Verify POST /clients/{id}/documents gracefully leaves summary & category empty when OPENAI_API_KEY is unset, while still indexing chunks and vectors."""
+    from config import settings
+
+    monkeypatch.setattr(settings, "OPENAI_API_KEY", "")
+
+    async with AsyncSessionLocal() as session:
+        john = await repo.get_client_by_email(session, "john.doe@neviswealth.com")
+        assert john is not None
+        john_id = john.id
+
+    resp = await client.post(
+        f"/clients/{john_id}/documents",
+        json={
+            "title": "Bespoke Family Aviation Charter Memo",
+            "content": (
+                "Private aviation charter memorandum for John Doe detailing NetJets fractional "
+                "flight hours between London Farnborough and Geneva."
+            ),
+        },
+    )
+    assert resp.status_code == 201
+    created_doc = resp.json()
+    doc_id = UUID(created_doc["id"])
+
+    try:
+        assert created_doc["summary"] is None
+        assert created_doc["category_id"] is None
+        assert created_doc["category"] is None
+
+        # Verify chunks and 768-d vectors are still generated even when LLM enrichment is skipped
+        async with AsyncSessionLocal() as session:
+            chunks = (
+                await session.execute(
+                    select(DocumentChunkModel)
+                    .where(DocumentChunkModel.document_id == doc_id)
+                    .order_by(DocumentChunkModel.chunk_index)
+                )
+            ).scalars().all()
+            assert len(chunks) == 1
+            assert "Bespoke Family Aviation Charter Memo" in chunks[0].chunk_text
+            assert len(chunks[0].embedding) == 768
+
+        # Verify document is still discoverable via search
+        search_resp = await client.get(
+            "/search", params={"q": "NetJets fractional aviation charter"}
+        )
+        assert search_resp.status_code == 200
+        doc_ids = [
+            item["id"]
+            for item in search_resp.json()
+            if item["type"] == "document"
+        ]
+        assert str(doc_id) in doc_ids
+    finally:
+        async with AsyncSessionLocal() as session:
+            await repo.delete_document(session, doc_id)
+

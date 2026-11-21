@@ -7,6 +7,7 @@ from typing import Annotated, Any
 from uuid import UUID
 
 from fastapi import Depends, FastAPI, HTTPException, Path, Query, status
+from fastapi_mcp import FastApiMCP
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -43,6 +44,7 @@ app = FastAPI(
 
 @app.post(
     "/clients",
+    operation_id="create_client",
     response_model=Client,
     status_code=status.HTTP_201_CREATED,
     tags=["Clients"],
@@ -83,6 +85,7 @@ async def create_client_endpoint(
 
 @app.post(
     "/clients/{id}/documents",
+    operation_id="create_client_document",
     response_model=Document,
     status_code=status.HTTP_201_CREATED,
     tags=["Documents"],
@@ -122,6 +125,7 @@ async def create_client_document_endpoint(
 
 @app.get(
     "/search",
+    operation_id="search",
     response_model=list[dict[str, Any]],
     status_code=status.HTTP_200_OK,
     tags=["Search"],
@@ -190,3 +194,12 @@ async def search_endpoint(
 
     combined.sort(key=lambda item: item[0], reverse=True)
     return [payload for _, payload in combined]
+
+
+mcp = FastApiMCP(
+    app,
+    name="Nevis WealthTech Search MCP",
+    description="Search and manage WealthTech clients and client documents.",
+)
+mcp.mount_http()
+

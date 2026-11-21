@@ -31,6 +31,10 @@ env/
 .env.*
 !.env.example
 
+# GCP Service Account Key
+gcp_key.json
+*gcp*key*.json
+
 # Testing & tooling
 .pytest_cache/
 .ruff_cache/

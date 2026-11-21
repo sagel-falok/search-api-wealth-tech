@@ -8,7 +8,9 @@ A FastAPI + PostgreSQL 18 backend providing intelligent search across **clients*
 
 - **Language & Runtime:** Python 3.11+ (`uv` package manager)
 - **Web Framework:** FastAPI + Pydantic v2 (OpenAPI 3.1.0 compliant)
+- **MCP Server:** `fastapi-mcp` exposing all API endpoints as Model Context Protocol (MCP) tools over Streamable HTTP (`/mcp`)
 - **Database:** PostgreSQL 18 with `pgvector` (`pgvector/pgvector:pg18`, `asyncpg` + SQLAlchemy 2.0 Async ORM)
+- **Document Enrichment (LLM):** OpenAI `AsyncOpenAI` Structured Outputs (`gpt-6-luna` by default, configurable via `OPENAI_MODEL`) classifying documents against our 16 defined wealth-management categories (`data/document_categories.json`) and generating concise summaries.
 - **Search Engine:** Hybrid Lexical + Semantic + Fuzzy Search combining:
   - **Semantic Vector Search:** `pgvector` (`HNSW` cosine index) + `FastEmbed` (`BAAI/bge-base-en-v1.5`, 768 dimensions) over contextualized document chunks (`document_chunks`).
   - **Lexical Full-Text Search (BM25-like):** PostgreSQL `tsvector` / `tsquery` (`ts_rank_cd` with length and saturation normalization `33`) backed by `GENERATED ALWAYS AS ... STORED` columns and `GIN` indexes.
@@ -32,11 +34,19 @@ make install
 
 ### 2. Configure Environment (Optional)
 
-By default, the application connects to `postgresql+asyncpg://postgres:postgres@localhost:5433/search_api`. You can optionally copy `.env.example` to `.env`:
+By default, the application connects to `postgresql+asyncpg://postgres:postgres@localhost:5433/search_api` and uses `gpt-6-luna` (`OPENAI_MODEL`) for document enrichment when `OPENAI_API_KEY` is provided. Copy `.env.example` to `.env`:
 
 ```bash
 cp .env.example .env
 ```
+
+```dotenv
+DATABASE_URL=postgresql+asyncpg://postgres:postgres@localhost:5433/search_api
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-6-luna
+```
+
+> If `OPENAI_API_KEY` is left empty, `POST /clients/{id}/documents` gracefully falls back to leaving `summary` and `category` empty (`null`) while still generating contextual chunks and 768-dimensional embeddings for hybrid search.
 
 ### 3. Start PostgreSQL & Seed Synthetic Data
 
@@ -66,6 +76,7 @@ The API will be available at **`http://localhost:8000`**:
 - **Interactive Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
 - **ReDoc Documentation:** [http://localhost:8000/redoc](http://localhost:8000/redoc)
 - **OpenAPI 3.1 Schema:** [http://localhost:8000/openapi.json](http://localhost:8000/openapi.json)
+- **MCP Server (Streamable HTTP):** [http://localhost:8000/mcp](http://localhost:8000/mcp)
 
 ### 5. Run Tests
 
@@ -75,13 +86,46 @@ uv run pytest -v
 
 ---
 
-## API Endpoints
+## API Endpoints & MCP Tools
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `POST` | `/clients` | Create a new client (`201 Created`, or `409 Conflict` on duplicate email) |
-| `POST` | `/clients/{id}/documents` | Attach a new document to an existing client (`201 Created`, or `404 Not Found`) |
-| `GET` | `/search?q={query}` | Search across clients and documents (`200 OK`) |
+All REST endpoints are also automatically exposed as **Model Context Protocol (MCP)** tools at **`http://localhost:8000/mcp`** via `fastapi-mcp`:
+
+| Method | Endpoint | MCP Tool Name (`operation_id`) | Description |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/clients` | `create_client` | Create a new client (`201 Created`, or `409 Conflict` on duplicate email) |
+| `POST` | `/clients/{id}/documents` | `create_client_document` | Attach a new document to an existing client; enriches `summary` & `category` via OpenAI Structured Outputs (`gpt-6-luna`), builds contextual chunks, and indexes 768-d vectors (`201 Created`, or `404 Not Found`) |
+| `GET` | `/search?q={query}` | `search` | Search across clients and documents (`200 OK`) |
+
+### Connecting an MCP Client (Cursor / Claude Desktop)
+
+Add the following to your MCP configuration (e.g. `.cursor/mcp.json`):
+
+```json
+{
+  "mcpServers": {
+    "nevis-search-api": {
+      "url": "http://localhost:8000/mcp"
+    }
+  }
+}
+```
+
+---
+
+## Document Creation Pipeline (`POST /clients/{id}/documents`)
+
+When a new document is created via `POST /clients/{id}/documents`, `repo.create_document` runs an end-to-end enrichment and indexing pipeline:
+
+1. **Load Defined Category Taxonomy (`llm.load_defined_categories`):**
+   - Loads and caches the 16 wealth-management categories from [`data/document_categories.json`](data/document_categories.json) (`category` slug, `name`, `summary`, and `examples`).
+2. **OpenAI Structured Output Generation (`llm.analyze_document`):**
+   - Calls `AsyncOpenAI.beta.chat.completions.parse` (default model `gpt-6-luna`, configurable via `OPENAI_MODEL`) with `response_format=DocumentAnalysisOutput`.
+   - Enforces a structured `{ "summary": str, "category": CategorySlug }` output where `category` is strictly constrained to the defined category slugs.
+   - Resolves the matching `DocumentCategoryModel` in PostgreSQL (`category_id`).
+   - **Graceful Fallback:** If `OPENAI_API_KEY` is not set or the API call fails, `summary` and `category_id` gracefully default to `None` without failing document creation.
+3. **Contextual Chunking & Vector Indexing (`embeddings.build_document_chunks` + `embed_passages`):**
+   - Builds `Chunk 0` (combining document title, owning client identity, resolved category taxonomy, and generated summary) plus sliding 200-word content windows (`Chunks 1..N`) for long documents.
+   - Computes 768-dimensional embeddings using `FastEmbed` (`BAAI/bge-base-en-v1.5`) and inserts `DocumentChunkModel` rows into `document_chunks` (`HNSW` cosine index) within the same transaction.
 
 ---
 

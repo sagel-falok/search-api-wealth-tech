@@ -6,8 +6,11 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "asyncpg>=0.30.0",
+    "fastapi-mcp>=0.4.0",
     "fastapi[standard]>=0.115.0",
     "fastembed>=0.9.1",
+    "mcp<2.0.0",
+    "openai>=1.50.0",
     "pgvector>=0.5.1",
     "pydantic-settings>=2.6.0",
     "pydantic[email]>=2.10.0",

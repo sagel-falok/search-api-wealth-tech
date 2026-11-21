@@ -1,23 +1,23 @@
-.PHONY: start run db-up db-down db-reset install seed
+.PHONY: start stop db-reset install seed deploy destroy
 
-start: db-up
-	uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+start:
+	docker compose up -d --build
 
-run:
-	uv run uvicorn main:app --host 0.0.0.0 --port 8000 --reload
-
-db-up:
-	docker compose up -d
-
-db-down:
+stop:
 	docker compose down
 
 db-reset:
 	docker compose down -v
-	docker compose up -d
+	docker compose up -d --build
 
 install:
 	uv sync
 
 seed:
-	uv run python seed.py
+	docker compose exec app uv run --no-dev python seed.py
+
+deploy:
+	./deploy.sh
+
+destroy:
+	./destroy.sh

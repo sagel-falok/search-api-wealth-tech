@@ -1,0 +1,48 @@
+# Environment files & credentials
+.env
+.env.*
+gcp_key.json
+*gcp*key*.json
+
+# Seed / local data folder
+data/
+
+# Python caches & build artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+
+# Local virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Testing & tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+test_*.py
+
+# Git & IDE files
+.git/
+.gitignore
+.DS_Store
+.idea/
+.vscode/
+.cursor/
+
+# Documentation & Docker files
+*.md
+*.pdf
+.dockerignore
+.gcloudignore
+docker-compose.yml
+*.sh
