@@ -126,7 +126,7 @@ async def create_client_document_endpoint(
 @app.get(
     "/search",
     operation_id="search",
-    response_model=list[dict[str, Any]],
+    response_model=list[ClientSearchResult | DocumentSearchResult],
     status_code=status.HTTP_200_OK,
     tags=["Search"],
     summary="Search across clients and documents",
@@ -141,21 +141,22 @@ async def create_client_document_endpoint(
                 "application/json": {
                     "example": [
                         {
-                            "type": "client",
                             "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                            "first_name": "John",
-                            "last_name": "Doe",
+                            "first_name": "john",
+                            "last_name": "doe",
                             "email": "john.doe@neviswealth.com",
                             "description": "High-net-worth tech executive looking for estate planning",
                             "social_links": ["https://linkedin.com/in/johndoe"],
+                            "type": "client",
                         },
                         {
-                            "type": "document",
                             "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
                             "client_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                             "title": "Utility Bill - October 2026",
                             "content": "Electricity utility bill for 123 Nevis Way serving as proof of address.",
+                            "summary": "October 2026 electricity bill confirming residential address at 123 Nevis Way.",
                             "created_at": "2026-11-19T12:00:00Z",
+                            "type": "document",
                         },
                     ]
                 }
@@ -187,7 +188,9 @@ async def search_endpoint(
     ] + [
         (
             score,
-            DocumentSearchResult.model_validate(doc).model_dump(),
+            DocumentSearchResult.model_validate(doc).model_dump(
+                exclude={"category", "category_id"}
+            ),
         )
         for doc, score in document_rows
     ]

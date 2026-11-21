@@ -78,9 +78,10 @@ async def test_search_address_proof_returns_utility_bills(
     assert "Eversource Electric & Boston Water Utility Statement" in titles
     assert "City of Westminster Annual Council Tax Bill 2026/2027" in titles
 
-    # Top document results should all be address_proof category with summaries populated
+    # Top document results should have summaries populated and exclude internal category/category_id fields
     for doc in docs[:3]:
-        assert doc["category"] == "address_proof"
+        assert "category" not in doc
+        assert "category_id" not in doc
         assert doc["summary"] is not None and len(doc["summary"]) > 10
 
 
@@ -229,8 +230,15 @@ async def test_search_typo_insensitive_documents(client: AsyncClient) -> None:
         item for item in resp_adres.json() if item["type"] == "document"
     ]
     assert len(adres_docs) >= 3
-    adres_categories = {d["category"] for d in adres_docs[:3]}
-    assert adres_categories == {"address_proof"}
+    for d in adres_docs[:3]:
+        assert "category" not in d
+        assert "category_id" not in d
+    adres_titles = {d["title"] for d in adres_docs[:3]}
+    assert adres_titles == {
+        "Thames Water & EDF Electricity Utility Bill - October 2026",
+        "Eversource Electric & Boston Water Utility Statement",
+        "City of Westminster Annual Council Tax Bill 2026/2027",
+    }
 
     # 'pasport verification'
     resp_pass = await client.get(
@@ -380,11 +388,16 @@ async def test_create_document_pipeline_with_openai_and_chunks(
 
     try:
         assert created_doc["summary"] == mock_analysis.summary
-        assert created_doc["category"] == "tax_filings_and_reporting"
-        assert created_doc["category_id"] is not None
+        assert "category" not in created_doc
+        assert "category_id" not in created_doc
 
-        # Verify chunks and 768-d vectors were created in document_chunks
+        # Verify internal category enrichment, chunks, and 768-d vectors were persisted in DB
         async with AsyncSessionLocal() as session:
+            db_doc = await repo.get_document(session, doc_id)
+            assert db_doc is not None
+            assert db_doc.category == "tax_filings_and_reporting"
+            assert db_doc.category_id is not None
+
             chunks = (
                 await session.execute(
                     select(DocumentChunkModel)
@@ -445,11 +458,16 @@ async def test_create_document_pipeline_graceful_fallback_without_openai_key(
 
     try:
         assert created_doc["summary"] is None
-        assert created_doc["category_id"] is None
-        assert created_doc["category"] is None
+        assert "category_id" not in created_doc
+        assert "category" not in created_doc
 
         # Verify chunks and 768-d vectors are still generated even when LLM enrichment is skipped
         async with AsyncSessionLocal() as session:
+            db_doc = await repo.get_document(session, doc_id)
+            assert db_doc is not None
+            assert db_doc.category_id is None
+            assert db_doc.category is None
+
             chunks = (
                 await session.execute(
                     select(DocumentChunkModel)

@@ -122,6 +122,7 @@ When a new document is created via `POST /clients/{id}/documents`, `repo.create_
    - Calls `AsyncOpenAI.beta.chat.completions.parse` (default model `gpt-6-luna`, configurable via `OPENAI_MODEL`) with `response_format=DocumentAnalysisOutput`.
    - Enforces a structured `{ "summary": str, "category": CategorySlug }` output where `category` is strictly constrained to the defined category slugs.
    - Resolves the matching `DocumentCategoryModel` in PostgreSQL (`category_id`).
+   - **Internal Enrichment Only:** Because users do not assign categories themselves when creating documents, `category` and `category_id` are treated strictly as an internal enrichment mechanism for search indexing and are not exposed in API response payloads.
    - **Graceful Fallback:** If `OPENAI_API_KEY` is not set or the API call fails, `summary` and `category_id` gracefully default to `None` without failing document creation.
 3. **Contextual Chunking & Vector Indexing (`embeddings.build_document_chunks` + `embed_passages`):**
    - Builds `Chunk 0` (combining document title, owning client identity, resolved category taxonomy, and generated summary) plus sliding 200-word content windows (`Chunks 1..N`) for long documents.
@@ -267,13 +268,11 @@ curl -s "http://localhost:8000/search?q=address%20proof"
   {
     "id": "7c9e6679-7425-40de-944b-e07fc1f90ae7",
     "client_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    "category_id": "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
     "title": "Thames Water & EDF Electricity Utility Bill - October 2026",
     "content": "Account Holder: John Doe. Service Address: 42 Kensington Palace Gardens, London W8 4QP, United Kingdom...",
     "summary": "October 2026 electricity and water utility bill confirming John Doe's residential address at 42 Kensington Palace Gardens, London.",
     "created_at": "2026-11-20T16:00:00Z",
-    "type": "document",
-    "category": "address_proof"
+    "type": "document"
   }
 ]
 ```

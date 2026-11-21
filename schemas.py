@@ -118,8 +118,8 @@ class Client(BaseModel):
         description="Unique client identifier",
         examples=["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
     )
-    first_name: str = Field(..., examples=["John"])
-    last_name: str = Field(..., examples=["Doe"])
+    first_name: str = Field(..., examples=["john"])
+    last_name: str = Field(..., examples=["doe"])
     email: EmailStr = Field(..., examples=["john.doe@neviswealth.com"])
     description: str | None = Field(
         default=None,
@@ -174,16 +174,6 @@ class Document(BaseModel):
         ...,
         description="ID of the client who owns this document",
         examples=["3fa85f64-5717-4562-b3fc-2c963f66afa6"],
-    )
-    category_id: StrUUID | None = Field(
-        default=None,
-        description="Optional ID of the assigned document category",
-        examples=["9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"],
-    )
-    category: str | None = Field(
-        default=None,
-        description="Machine-friendly slug of the assigned document category",
-        examples=["address_proof"],
     )
     title: str = Field(..., examples=["Utility Bill - October 2026"])
     content: str = Field(

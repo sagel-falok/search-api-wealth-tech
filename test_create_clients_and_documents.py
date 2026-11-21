@@ -205,12 +205,17 @@ async def test_create_client_and_attach_document_end_to_end(
         assert doc_data["client_id"] == str(client_id)
         assert doc_data["title"] == "Geneva Lakefront Villa Purchase & Land Registry Deed"
         assert doc_data["summary"] == mock_analysis.summary
-        assert doc_data["category"] == "real_estate_and_property"
-        assert doc_data["category_id"] is not None
+        assert "category" not in doc_data
+        assert "category_id" not in doc_data
         assert doc_data["created_at"] is not None
 
-        # Verify contextual chunks and 768-d embeddings were generated and linked to the document
+        # Verify internal category enrichment, contextual chunks, and 768-d embeddings in DB
         async with AsyncSessionLocal() as session:
+            db_doc = await repo.get_document(session, doc_id)
+            assert db_doc is not None
+            assert db_doc.category == "real_estate_and_property"
+            assert db_doc.category_id is not None
+
             chunks = (
                 await session.execute(
                     select(DocumentChunkModel)
@@ -233,6 +238,8 @@ async def test_create_client_and_attach_document_end_to_end(
         ]
         assert len(search_docs) >= 1
         assert search_docs[0]["id"] == str(doc_id)
+        assert "category" not in search_docs[0]
+        assert "category_id" not in search_docs[0]
     finally:
         # Deleting the client cascades to its documents and document_chunks
         async with AsyncSessionLocal() as session:
