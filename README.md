@@ -4,6 +4,7 @@ A FastAPI + PostgreSQL 18 backend providing unified, typo-tolerant search across
 
 ## Live Deployment (Google Cloud Run)
 
+- **GitHub Repository:** [https://github.com/sagel-falok/search-api-wealth-tech](https://github.com/sagel-falok/search-api-wealth-tech)
 - **Service URL:** `https://search-api-m4l2onkmna-nw.a.run.app`
 - **Swagger Docs:** [https://search-api-m4l2onkmna-nw.a.run.app/docs](https://search-api-m4l2onkmna-nw.a.run.app/docs)
 - **MCP Endpoint:** `https://search-api-m4l2onkmna-nw.a.run.app/mcp`
