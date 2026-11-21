@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "nevis-search-api": {
+      "type": "http",
+      "url": "https://search-api-m4l2onkmna-nw.a.run.app/mcp"
+    }
+  }
+}
